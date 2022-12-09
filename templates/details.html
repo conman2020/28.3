@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.first_name}}</title>
+</head>
+<body>
+    <h1>{{user.first_name}} Details</h1>
+    <h2><form><button formaction="/users/{{ user.id }}/edit" formmethod="GET">Edit</button>
+
+    <button class="btn btn-primary btn-sm"
+        formaction="/users/{{ user.id }}/delete"
+        formmethod="POST">Delete</button></form>
+    <ul>
+        <li>First_Name: {{user.first_name}}</li>
+        <li>Last_Name: {{user.last_name}}</li>
+        <li>ID: {{user.id}}</li>
+        
+    </ul>
+    {% if user.url %}
+  <div id="url">
+    <img src="{{ user.url }}" alt="{{ user.first_name }}" >
+  </div>
+  {% endif %}
+    <a href="/">Go back</a>
+</body>
+</html>
