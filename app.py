@@ -1,5 +1,5 @@
 """Blogly application."""
-from models import User, db, connect_db
+from models import User, Post, db, connect_db
 from flask import Flask, request, render_template, redirect, flash, session
 
 
@@ -50,21 +50,86 @@ def users_update(user_id):
     return render_template('users/edit.html', user=user)
 
 @app.route('/users/<int:user_id>/edit', methods=["POST"])
-def users_update(user_id):
+def users_updated(user_id):
     """Handle form submission for updating an existing user"""
 
-    user = User.query.get_or_404(user.id)
-    user.first_name = request.form['first_name']
-    user.last_name = request.form['last_name']
-    user.url = request.form['image_url']
+    newest_user = User.query.get_or_404(user_id)
+    newest_user.first_name = request.form['first_name']
+    newest_user.last_name = request.form['last_name']
+    newest_user.url = request.form['url']
 
-    db.session.add(user)
+    db.session.add(newest_user)
     db.session.commit()
 
     return redirect("/")
 
 @app.route('/users/<int:user_id>/delete', methods=["POST"])
 def users_destroy(user_id):
+    """Handle form submission for deleting an existing user"""
+
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+
+    return redirect("/")
+
+
+@app.route('/users/<int:user_id>/newpost')
+def users_new_post(user_id):
+    """Handle form submission for updating an existing user"""
+
+    user = User.query.get_or_404(user_id)
+    return render_template('users/newpost.html', user=user)
+
+@app.route('/users/<int:user_id>/newpost', methods=["POST"])
+def users_new_posted(user_id):
+    """Handle form submission for updating an existing user"""
+
+    user_id = User.query.get_or_404(user_id)
+    title = request.form['title']
+    content = request.form['content']
+    new_post = Post(title=title, content=content, user=user_id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect("/")
+
+
+@app.route("/posts/<int:post_id>")
+def show_specific_post(post_id):
+    """Show info on a single pet."""
+
+    post = Post.query.get_or_404(post_id)
+    return render_template("/posts/edit.html", post=post)
+
+@app.route("/users/<int:user_id>")
+def go_back_to_user(user_id):
+    """Show info on a single pet."""
+
+    user = User.query.get_or_404(user_id)
+    return render_template("details.html", user=user)
+@app.route("/posts/<int:post_id>/change")
+def load_form(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('posts/change.html', post=post)
+
+
+@app.route("/posts/<int:post_id>/change", methods=["POST"])
+def edit_form(post_id):
+    changed_post = Post.query.get_or_404(post_id)
+    changed_post.title = request.form['title']
+    changed_post.content = request.form['content']
+
+    db.session.add(changed_post)
+    db.session.commit()
+
+    return redirect("/")
+
+
+
+@app.route('/users/<int:user_id>/delete', methods=["POST"])
+def form_delete(user_id):
     """Handle form submission for deleting an existing user"""
 
     user = User.query.get_or_404(user_id)

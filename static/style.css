@@ -1,0 +1,19 @@
+body {
+    display:flex;
+}
+nav{
+
+    display: inline-flex;
+    flex-grow: 0;
+}
+
+/* ul{
+    flex-direction: row;
+}
+ol{
+    flex-direction: row;
+} */
+
+.flex-container{
+    flex-direction: column;
+}

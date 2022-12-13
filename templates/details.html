@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{user.first_name}}</title>
 </head>
 <body>
-    <h1>{{user.first_name}} Details</h1>
-    <h2><form><button formaction="/users/{{ user.id }}/edit" formmethod="GET">Edit</button>
-
+ 
+    <div id="url">
+        <img src="{{ user.url }}" alt="{{ user.first_name }}" >
+      </div>
+      <div class="flex-container">
+    <nav >
+        <!-- class="flex-container" -->
+        <form>
+            <button formaction="/users/{{ user.id }}/edit" formmethod="GET">Edit User</button>
+            
     <button class="btn btn-primary btn-sm"
         formaction="/users/{{ user.id }}/delete"
-        formmethod="POST">Delete</button></form>
+        formmethod="POST">Delete User</button></form>
+        <form>
+    <button class="btn btn-primary btn-sm"
+        formaction="/users/{{ user.id }}/newpost"
+        formmethod="GET">Add Post</button></form></nav>
     <ul>
-        <li>First_Name: {{user.first_name}}</li>
-        <li>Last_Name: {{user.last_name}}</li>
+        <li>Name: {{user.first_name}}  {{user.last_name}}</li>
         <li>ID: {{user.id}}</li>
         
     </ul>
-    {% if user.url %}
-  <div id="url">
-    <img src="{{ user.url }}" alt="{{ user.first_name }}" >
-  </div>
-  {% endif %}
+   <h2> Posts</h2>
+    <ol>
+        {% for post in user.posts %}
+        <li>
+            <a href="/posts/{{post.post_id}}"> {{post.title}}</a>
+        </li>
+        {% endfor %}
+    </ol>
+   
     <a href="/">Go back</a>
+</div>
 </body>
 </html>
