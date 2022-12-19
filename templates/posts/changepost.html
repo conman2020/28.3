@@ -4,7 +4,7 @@
 
 <h1>Edit Post</h1>
 
-<form method="POST" action="/posts/{{ post.id }}/changepost">
+<form method="POST" action="/posts/{{ post.post_id }}/changepost">
 
   <div class="form-group row">
     <label for="title" class="col-sm-2 col-form-label">Title</label>
@@ -18,14 +18,14 @@
     <div class="col-sm-10">
         <input type="text"
         class="form-control"
-        id="url"
-        name="url"
+        id="content"
+        name="content"
         value="{{ post.content }}">
     </div>
   </div>
   <div class="form-check">
     {% for tag in tags %}
-    <div>
+    <div>s
       <input class="form-check-input"
              type="checkbox"
              value="{{ tag.id }}"

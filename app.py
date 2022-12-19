@@ -134,18 +134,19 @@ def load_form(post_id):
 
 @app.route("/posts/<int:post_id>/changepost", methods=["POST"])
 def edit_form(post_id):
-    changed_post = Post.query.get_or_404(post_id)
-    changed_post.title = request.form['title']
-    changed_post.content = request.form['content']
+    post = Post.query.get_or_404(post_id)
+    post.title = request.form['title']
+    post.content = request.form['content']
+    # user=post.user_id
 
     tag_ids = [int(num) for num in request.form.getlist("tags")]
-    changed_post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+    post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
 
-    db.session.add(changed_post)
+    db.session.add(post)
     db.session.commit()
     flash(f"Post '{Post.title}' edited.")
-
-    return render_template("/details.html")
+    return redirect(f"/users/{post.user_id}")
+    # return render_template ("details.html", user=user)
     # post = Post.query.get_or_404(post_id)
     # post.title = request.form['title']
     # post.content = request.form['content']
@@ -241,7 +242,7 @@ def tags_edit(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     tag.name = request.form['name']
     post_ids = [int(num) for num in request.form.getlist("posts")]
-    tag.posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    tag.posts = Post.query.filter(Post.post_id.in_(post_ids)).all()
 
     db.session.add(tag)
     db.session.commit()
