@@ -1,0 +1,16 @@
+{% block title %}Tags{% endblock %}
+
+{% block content %}
+
+<h1>Tags</h1>
+
+<ul>
+  {% for tag in tags %}
+  <li><a href="/tags/{{ tag.id }}">{{ tag.name }}</a></li>
+  {% endfor %}
+</ul>
+
+<p><a class="btn btn-primary" href="/tags/newtag">Add Tag</a></p>
+<p><a class="btn btn-primary" href="/">Go Back</a></p>
+
+{% endblock %}
